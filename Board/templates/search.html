@@ -1,0 +1,53 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Search
+{% endblock title %}
+
+{% block content %}
+<h1>Messages</h1>
+
+<form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
+    {% if search %}
+        <table>
+            <tr>
+                <td>Post</td>
+                <td>Author</td>
+                <td>Text</td>
+
+            </tr>
+            {% for message in search %}
+                <tr>
+                    <td>{{ message.post.title }}</td>
+                    <td>{{ message.author }}</td>
+                    <td>{{ message.text | truncatechars:120 }}</td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+{% endblock content %}
